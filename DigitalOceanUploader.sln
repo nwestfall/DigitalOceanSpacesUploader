@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27004.2002
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DigitalOceanUploader", "DigitalOceanUploader\DigitalOceanUploader.csproj", "{2813CB0E-C380-4239-A238-91749B29EC34}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{2813CB0E-C380-4239-A238-91749B29EC34}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2813CB0E-C380-4239-A238-91749B29EC34}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2813CB0E-C380-4239-A238-91749B29EC34}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2813CB0E-C380-4239-A238-91749B29EC34}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E2629F98-4390-42AA-A40A-5CB544EF3ADD}
+	EndGlobalSection
+EndGlobal

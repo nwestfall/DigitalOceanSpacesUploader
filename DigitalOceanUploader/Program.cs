@@ -79,37 +79,58 @@ namespace DigitalOceanSpacesManager
 			// Can now setup manager
 			DigitalOceanUploadManager digitalOceanUploadManager = new DigitalOceanUploadManager(keyManager, spaceName);
 
-            bool fileExists = false;
-            do
-            {
-                Console.Write("Enter file location: ");
-                filePath = Console.ReadLine();
-                if (File.Exists(filePath))
-                {
-                    contentType = MimeGuesser.GuessFileType(filePath).MimeType;
-                    fileExists = true;
-                }
-                else
-                {
-                    fileExists = false;
-                    Console.WriteLine("File does not exist.  Please enter again.");
-                }
-            } while (!fileExists);
-            Console.Write("Enter name to use when uploaded: ");
-            uploadName = Console.ReadLine();
-            Console.Write("Wipe away previous attempts? (Y/n): ");
-            var wipeAway = Console.ReadLine();
-            if(wipeAway == "Y")
-            {
-				await digitalOceanUploadManager.CleanUpPreviousAttempts();
-            }
+			Console.WriteLine("Do you wish to upload or download a file? (U - upload, D - download): ");
+			var upDown = Console.ReadLine();
 
-			digitalOceanUploadManager.UploadStatusEvent += DigitalOceanUploadManager_UploadStatusEvent;
-			digitalOceanUploadManager.UploadExceptionEvent += DigitalOceanUploadManager_UploadExceptionEvent;
-			var uploadId = await digitalOceanUploadManager.UploadFile(filePath, uploadName);
-			Console.WriteLine("File upload complete");
-			digitalOceanUploadManager.UploadStatusEvent -= DigitalOceanUploadManager_UploadStatusEvent;
-			digitalOceanUploadManager.UploadExceptionEvent -= DigitalOceanUploadManager_UploadExceptionEvent;
+			if (upDown == "U")
+			{
+				bool fileExists = false;
+				do
+				{
+					Console.Write("Enter file location: ");
+					filePath = Console.ReadLine();
+					if (File.Exists(filePath))
+					{
+						contentType = MimeGuesser.GuessFileType(filePath).MimeType;
+						fileExists = true;
+					}
+					else
+					{
+						fileExists = false;
+						Console.WriteLine("File does not exist.  Please enter again.");
+					}
+				} while (!fileExists);
+				Console.Write("Enter name to use when uploaded: ");
+				uploadName = Console.ReadLine();
+				Console.Write("Wipe away previous attempts? (Y/n): ");
+				var wipeAway = Console.ReadLine();
+				if (wipeAway == "Y")
+				{
+					await digitalOceanUploadManager.CleanUpPreviousAttempts();
+				}
+
+				digitalOceanUploadManager.UploadStatusEvent += DigitalOceanUploadManager_UploadStatusEvent;
+				digitalOceanUploadManager.UploadExceptionEvent += DigitalOceanUploadManager_UploadExceptionEvent;
+				var uploadId = await digitalOceanUploadManager.UploadFile(filePath, uploadName);
+				Console.WriteLine("File upload complete");
+				digitalOceanUploadManager.UploadStatusEvent -= DigitalOceanUploadManager_UploadStatusEvent;
+				digitalOceanUploadManager.UploadExceptionEvent -= DigitalOceanUploadManager_UploadExceptionEvent;
+			}
+			else if (upDown == "D")
+			{
+				Console.Write("Enter name used to upload file: ");
+				var uploadFileName = Console.ReadLine();
+				Console.Write("Enter location to save file: ");
+				var downloadLocation = Console.ReadLine();
+				var file = await digitalOceanUploadManager.DownloadFile(uploadFileName);
+				using(var fs = File.Create(downloadLocation))
+				{
+					fs.Write(file, 0, file.Length);
+				}
+				Console.WriteLine($"File downloaded to {downloadLocation} ({file.Length})");
+			}
+			else
+				Console.WriteLine("No idea what you want.  Try again");
 
 			digitalOceanUploadManager?.Dispose();
 			digitalOceanUploadManager = null;

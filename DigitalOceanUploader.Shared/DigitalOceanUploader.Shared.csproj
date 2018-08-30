@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFrameworks>netstandard2.0;netcoreapp2.0;net462</TargetFrameworks>
+  </PropertyGroup>
+
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="Mime" Version="3.0.1" />
+    <PackageReference Include="AWSSDK.S3" Version="3.3.21.1" />
+  </ItemGroup>
+</Project>

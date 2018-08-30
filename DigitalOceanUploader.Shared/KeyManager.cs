@@ -4,21 +4,39 @@ using System.Security;
 using System.IO;
 using System.Runtime.InteropServices;
 
-namespace DigitalOceanSpacesManager
+namespace DigitalOceanUploader.Shared
 {
     /// <summary>
     /// Manage Keys for Digital Ocean
     /// </summary>
-    public static class KeyManager
+	public class KeyManager : IDisposable
     {
         /// <summary>
         /// Store Access Key
         /// </summary>
-        public static readonly SecureString ACCESS_KEY = new SecureString();
+        public readonly SecureString AccessKey = new SecureString();
         /// <summary>
         /// Store Secret Key
         /// </summary>
-        public static readonly SecureString SECRET_KEY = new SecureString();
+        public readonly SecureString SecretKey = new SecureString();
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="T:DigitalOceanUploader.Shared.KeyManager"/> class.
+		/// </summary>
+		public KeyManager() { }
+
+		/// <summary>
+		/// Initializes a new instance of the <see cref="T:DigitalOceanUploader.Shared.KeyManager"/> class.
+		/// </summary>
+		/// <param name="accessKey">Access key.</param>
+		/// <param name="secretKey">Secret key.</param>
+		public KeyManager(string accessKey, string secretKey)
+		{
+			foreach (var c in accessKey)
+				AccessKey.AppendChar(c);
+			foreach (var c in secretKey)
+				SecretKey.AppendChar(c);
+		}
 
         /// <summary>
         /// Translate Secure String to String
@@ -38,5 +56,11 @@ namespace DigitalOceanSpacesManager
                 Marshal.ZeroFreeGlobalAllocUnicode(valuePtr);
             }
         }
+
+		public void Dispose()
+		{
+			AccessKey?.Dispose();
+			SecretKey?.Dispose();
+		}
     }
 }

@@ -182,6 +182,32 @@ namespace DigitalOceanUploader.Shared
 		}
 
 		/// <summary>
+		/// Downloads the file.
+		/// </summary>
+		/// <returns>The file.</returns>
+		/// <param name="uploadName">Upload name.</param>
+		public async Task<byte[]> DownloadFile(string uploadName)
+		{
+			if (string.IsNullOrWhiteSpace(uploadName))
+				throw new ArgumentNullException(nameof(uploadName));
+
+			using(var client = CreateNewClient())
+			{
+				var objectResponse = await client.GetObjectAsync(new Amazon.S3.Model.GetObjectRequest()
+				{
+					BucketName = _spaceName,
+					Key = uploadName
+				});
+
+				using(var ms = new MemoryStream())
+				{
+					objectResponse.ResponseStream.CopyTo(ms);
+					return ms.ToArray();
+				}
+			}
+		}
+
+		/// <summary>
 		/// Occurs when upload exception event.
 		/// </summary>
 		public event EventHandler<UploadException> UploadExceptionEvent = delegate { };

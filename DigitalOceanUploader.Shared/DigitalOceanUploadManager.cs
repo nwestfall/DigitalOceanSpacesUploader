@@ -188,6 +188,9 @@ namespace DigitalOceanUploader.Shared
 		/// <param name="uploadName">Upload name.</param>
 		public async Task<byte[]> DownloadFile(string uploadName)
 		{
+			if (string.IsNullOrWhiteSpace(uploadName))
+				throw new ArgumentNullException(nameof(uploadName));
+
 			using(var client = CreateNewClient())
 			{
 				var objectResponse = await client.GetObjectAsync(new Amazon.S3.Model.GetObjectRequest()
